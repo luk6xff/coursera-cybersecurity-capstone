@@ -12,8 +12,8 @@ class Profile(models.Model):
 
 
 class Message(models.Model):
-     sender = models.ForeignKey(Profile, related_name="sender", null=True)
-     reciever = models.ForeignKey(Profile, related_name="receiver", null=True)
+     sender = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="sender", null=True)
+     reciever = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="receiver", null=True)
      message_content = models.CharField(max_length=250, null=True, blank=True)
      creation_time = models.DateTimeField(null=True, auto_now_add=True)
 

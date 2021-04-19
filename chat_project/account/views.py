@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -11,6 +11,8 @@ from .forms import LoginForm, UserRegistrationForm, \
 
 
 def user_login(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect("/")
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -21,8 +23,7 @@ def user_login(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return HttpResponse('Authenticated '\
-                                        'successfully')
+                    return HttpResponseRedirect("/")
                 else:
                     return HttpResponse('Disabled account')
             else:
@@ -30,6 +31,7 @@ def user_login(request):
     else:
         form = LoginForm()
     return render(request, 'account/login.html', {'form': form})
+
 
 
 @login_required
@@ -87,6 +89,12 @@ def edit(request):
 
 @login_required
 def dbdump(request):
-    return render(request,
-                  'db_dump.html',
-                  {'section': 'db_dump'})
+    return render(request, 'db_dump.html', {})
+
+
+def send_message(request):
+    queryset = User.objects.all()
+    form = CreateMessageForm()
+    confirm = None
+    if request.method == "POST":
+        #LU TODO

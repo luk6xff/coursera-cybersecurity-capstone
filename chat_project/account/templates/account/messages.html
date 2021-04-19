@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 style="text-align:center;margin-top:10px">inbox</h1>
+<div class="linksLog">
+<a class="leftLink" href="/logout/" >logout</a>
+<a class="rightLink" href="/send-message/">send a message</a>
+</div>
+<div class="contentMessages">
+    <h3> Hello {{ request.user }},,</h3>
+
+{% for msg in object_list %}
+
+    <ul><i class="fa fa-commenting-o" aria-hidden="true"></i>
+ {{ msg.message_content }} <strong><i class="fa fa-user-o" aria-hidden="true"></i>
+ {{ msg.sender }} </strong></ul>
+{% endfor %}
+</div>
+
+{% endblock content %}

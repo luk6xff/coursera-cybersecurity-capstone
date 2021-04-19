@@ -21,8 +21,13 @@ django-admin startapp account
 ### Build
 ```
 cd chat_project
-python manage.py makemigrations
-python manage.py migrate
+python manage.py makemigrations && python manage.py migrate
+```
+
+### Create an admin account
+```
+python manage.py createsuperuser --username=luk6xff --email=luk6xff@example.com
+$ password: ...
 ```
 
 ### Run a development server
