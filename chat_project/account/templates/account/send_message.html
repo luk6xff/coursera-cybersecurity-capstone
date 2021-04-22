@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 style="text-align:center;margin-top:10px">Send Messages</h1>
+<div class="sendMsg">
+
+<form  method="POST">
+    {% csrf_token %}
+    {{ msg_form.as_p }}
+    Send To
+    <!-- <select name="receiver">
+        {% for user in user_list %}
+        <option value="{{ user.username }}">{{ user.username }}</option>
+        {% endfor %}
+    </select><br> -->
+
+    <textarea name="message" placeholder="Please Write your Message....." required></textarea><br>
+
+    <input type="submit" value="send"><br>
+    {% if confirm %}
+        {{ confirm }}
+    {% endif %}
+</form>
+
+</div>
+
+{% endblock content %}

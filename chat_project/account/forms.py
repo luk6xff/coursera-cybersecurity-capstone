@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile, Message
 
 
 class LoginForm(forms.Form):
@@ -38,7 +38,5 @@ class ProfileEditForm(forms.ModelForm):
 
 
 class CreateMessageForm(forms.Form):
-    receiver = forms.SelectMultiple()
-    message_content = forms.CharField()
-
-
+    receiver = forms.ModelChoiceField(queryset=User.objects.all())
+    message = forms.CharField(max_length=250)

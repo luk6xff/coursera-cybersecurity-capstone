@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 style="text-align:center;margin-top:10px">inbox</h1>
+<div class="contentMessages">
+    <h3> Hello {{ request.user.username }},,</h3>
+
+{% for msg in msg_list %}
+
+    <ul><i class="fa fa-commenting-o" aria-hidden="true"></i>
+ {{ msg.message }} <strong><i class="fa fa-user-o" aria-hidden="true"></i>
+ {{ msg.sender }} </strong></ul>
+{% endfor %}
+</div>
+
+{% endblock content %}

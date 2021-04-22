@@ -13,17 +13,17 @@
       <li {% if section == "dashboard" %}class="selected"{% endif %}>
         <a href="{% url "dashboard" %}">My dashboard</a>
       </li>
-      <li {% if section == "images" %}class="selected"{% endif %}>
-        <a href="#">Images</a>
+      <li {% if section == "send_message" %}class="selected"{% endif %}>
+        <a href="{% url "send_message" %}">Send Message</a>
       </li>
-      <li {% if section == "people" %}class="selected"{% endif %}>
-        <a href="#">People</a>
+      <li {% if section == "Inbox" %}class="selected"{% endif %}>
+        <a href="{% url "inbox" %}">Inbox</a>
       </li>
     </ul>
   {% endif %}
   <span class="user">
     {% if request.user.is_authenticated %}
-      Hello {{ request.user.first_name }},
+      Hello {{ request.user.username }},
       <a href="{% url "logout" %}">Logout</a>
     {% else %}
       <a href="{% url "login" %}">Log-in</a>

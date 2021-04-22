@@ -1,13 +1,17 @@
 from django.shortcuts import render
 
 # Create your views here.
+
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import Profile
+from django import forms
+from .models import Profile, Message
 from .forms import LoginForm, UserRegistrationForm, \
-                   UserEditForm, ProfileEditForm
+                   UserEditForm, ProfileEditForm, \
+                   CreateMessageForm
 
 
 def user_login(request):
@@ -31,7 +35,6 @@ def user_login(request):
     else:
         form = LoginForm()
     return render(request, 'account/login.html', {'form': form})
-
 
 
 @login_required
@@ -87,14 +90,43 @@ def edit(request):
                   {'user_form': user_form,
                    'profile_form': profile_form})
 
+
+@login_required
+def send_message(request):
+    form = CreateMessageForm()
+    form.fields['receiver'] = forms.ModelChoiceField(queryset=User.objects.exclude(id=request.user.id))
+    confirm = None
+    if request.method == "POST":
+        form = CreateMessageForm(request.POST)
+        print("post")
+        if form.is_valid():
+            print(Profile)
+            receiver = request.POST.get("receiver")
+            #import pdb; pdb.set_trace()
+            msg = Message.objects.create(
+                receiver = Profile.objects.get(user=User.objects.get(id=receiver)),
+                sender   = Profile.objects.get(user=User.objects.get(id=request.user.id)),
+                message  = form.cleaned_data.get("message")
+            )
+            confirm = f"Message sent succesfully to: {User.objects.get(id=receiver).username}"
+            msg.save()
+        else:
+            print("send_message form not valid!")
+    context = {
+        'msg_form' : form,
+        'confirm' : confirm
+    }
+    return render(request, 'account/send_message.html', context)
+
+
+@login_required
+def inbox(request):
+    context = {
+        'msg_list' : Message.objects.all(),
+    }
+    return render(request, 'account/inbox.html', context)
+
+
 @login_required
 def dbdump(request):
     return render(request, 'db_dump.html', {})
-
-
-def send_message(request):
-    queryset = User.objects.all()
-    form = CreateMessageForm()
-    confirm = None
-    if request.method == "POST":
-        #LU TODO
