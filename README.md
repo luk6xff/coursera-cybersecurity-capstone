@@ -46,6 +46,7 @@ Go to a website `http://127.0.0.1:8000/`
 ### Run a production server
 First you need to install `nginx` server
 ```
+sudo apt-get update
 sudo apt install nginx
 touch /etc/nginx/sites-available/chat_project
 cp chat_project/chat_project_nginx.conf /etc/nginx/sites-available/chat_project
@@ -57,9 +58,14 @@ sudo nginx -t
 ```
 Modify a gunicorn run command to be able to talk to Nginx:
 ```
-gunicorn --daemon --workers=5 --bind unix:~/chat_project/chat_project/chat_project.sock chat_project.wsgi
+gunicorn --daemon --workers=5 --bind unix:/tmp/chat_project.sock chat_project.wsgi
 ```
-Modify /etc/nginx/nginx.conf as shown below:
+or preffered way:
+```
+./run_gunicron.sh
+```
+```
+Modify `/etc/nginx/nginx.conf` as shown below:
 ```
 user root www-data
 ```
