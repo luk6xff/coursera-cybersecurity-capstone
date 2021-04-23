@@ -6,6 +6,7 @@ Solution for [Coursera Cybersecurity Capstone Project](https://www.coursera.org/
 ```
 python3 -m venv venv
 source venv/bin/activate
+pip install -U pip
 pip install -r requirements.txt
 ```
 
@@ -40,9 +41,12 @@ $ password: ...
 ```
 python manage.py runserver
 ```
+Go to a website `http://127.0.0.1:8000/`
 
 ### Run a production server
-TODO
+```
+gunicorn -b 0.0.0.0:8000 chat_project.wsgi
+```
 
 ### Go to a website
 `http://127.0.0.1:8000/`

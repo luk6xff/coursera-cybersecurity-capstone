@@ -16,7 +16,7 @@ FILES =
 .DEFAULT_GOAL = all
 
 # Run the app
-all: setup run
+all: setup run_prod
 
 # The @ makes sure that the command itself isn't echoed in the terminal
 help:
@@ -29,14 +29,18 @@ help:
 # This generates the desired project file structure
 setup:
 	${PYTHON} -m venv venv
-	source venv/bin/activate && pip install -r requirements.txt
+	source venv/bin/activate && pip install -U pip && pip install -r requirements.txt
 
 # This function uses pytest to test our source files, not used for now
 test:
 	${PYTHON} -m pytest
 
-run:
+run_dev:
 	source venv/bin/activate && cd chat_project && ${PYTHON} manage.py makemigrations && ${PYTHON} manage.py migrate && ${PYTHON} manage.py runserver
+
+run_prod:
+	source venv/bin/activate && cd chat_project && ${PYTHON} manage.py makemigrations && ${PYTHON} manage.py migrate && gunicorn -b 0.0.0.0:80 chat_project.wsgi
+
 
 # Cleanup the stuff
 clean:
