@@ -39,16 +39,16 @@ $ password: ...
 
 ### Run a development server
 ```
-python manage.py runserver 127.0.0.1:8000
+python manage.py runserver 127.0.0.1:80
 ```
-Go to a website `http://127.0.0.1:8000/`
+Go to a website `http://127.0.0.1:80/`
 
 ### Run a production server
 Test if gunicorn works
 ```
-gunicorn chat_project.wsgi:application --bind 0.0.0.0:8000
+gunicorn chat_project.wsgi:application --bind 0.0.0.0:80
 ```
-Go to a website `http://0.0.0.0:8000/` and see if it is accessible.
+Go to a website `http://0.0.0.0:80/` and see if it is accessible.
 
 First you need to install `nginx` server
 ```
@@ -94,4 +94,4 @@ Restart Nginx:
 systemctl restart nginx
 ```
 
-Go to a website `http://0.0.0.0:8000/`
+Go to a website `http://0.0.0.0:80/`
