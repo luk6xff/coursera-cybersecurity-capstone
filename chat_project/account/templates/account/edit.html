@@ -6,9 +6,28 @@
   <h1>Edit your account</h1>
   <p>You can edit your account using the following form:</p>
   <form method="post" enctype="multipart/form-data">
-    {{ user_form.as_p }}
-    {{ profile_form.as_p }}
+    <!-- {{ user_form.as_p }}
+    {{ profile_form.as_p }} -->
     {% csrf_token %}
-    <p><input type="submit" value="Save changes"></p>
+    {% load crispy_forms_tags %}
+    <div class="container">
+        {{ user_form|crispy  }}
+        {{ profile_form|crispy  }}
+      <div class="row align-items-start">
+        <button type="submit" class="btn btn-success">Save changes</button>
+      </div>
+    </div>
+
+    {% if profile_form.errors or user_form.errors %}
+      <div class="alert alert-danger" id="danger-alert">
+        <button type="button" class="close" data-dismiss="alert">x</button>
+        <strong>Error!</strong> profile data has been not updated!
+      </div>
+    {% else %}
+      <div class="alert alert-success" id="success-alert">
+          <button type="button" class="close" data-dismiss="alert">x</button>
+          <strong>Success!</strong> profile data edited succesfully!
+      </div>
+    {% endif %}
   </form>
 {% endblock %}

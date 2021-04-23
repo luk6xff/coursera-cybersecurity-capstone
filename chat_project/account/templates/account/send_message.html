@@ -1,26 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
-<h1 style="text-align:center;margin-top:10px">Send Messages</h1>
-<div class="sendMsg">
+<h1>Send Message</h1>
+<div class="sendmsg">
+    <form  method="POST">
+        {% csrf_token %}
+        {% load crispy_forms_tags %}
+        {{ msg_form|crispy }}
+        <!-- {{ msg_form.as_p }} -->
+        <button type="submit" class="btn btn-success">Send message</button>
 
-<form  method="POST">
-    {% csrf_token %}
-    {{ msg_form.as_p }}
-    Send To
-    <!-- <select name="receiver">
-        {% for user in user_list %}
-        <option value="{{ user.username }}">{{ user.username }}</option>
-        {% endfor %}
-    </select><br> -->
+        {% if confirm %}
 
-    <textarea name="message" placeholder="Please Write your Message....." required></textarea><br>
-
-    <input type="submit" value="send"><br>
-    {% if confirm %}
-        {{ confirm }}
-    {% endif %}
-</form>
-
+        <div class="alert alert-success" id="success-alert">
+            <button type="button" class="close" data-dismiss="alert">x</button>
+            <strong>Success!</strong> {{ confirm }}.
+        </div>
+        {% endif %}
+    </form>
 </div>
 
 {% endblock content %}

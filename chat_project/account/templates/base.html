@@ -1,50 +1,79 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
   <title>{% block title %}{% endblock %}</title>
   <link href="{% static "css/base.css" %}" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
-  <div id="header">
-    <span class="logo">Coursera Cybersecurity Capstone Chat</span>
-    {% if request.user.is_authenticated %}
-    <ul class="menu">
-      <li {% if section == "dashboard" %}class="selected"{% endif %}>
-        <a href="{% url "dashboard" %}">My dashboard</a>
-      </li>
-      <li {% if section == "send_message" %}class="selected"{% endif %}>
-        <a href="{% url "send_message" %}">Send Message</a>
-      </li>
-      <li {% if section == "Inbox" %}class="selected"{% endif %}>
-        <a href="{% url "inbox" %}">Inbox</a>
-      </li>
-    </ul>
-  {% endif %}
-  <span class="user">
-    {% if request.user.is_authenticated %}
-      Hello {{ request.user.username }},
-      <a href="{% url "logout" %}">Logout</a>
-    {% else %}
-      <a href="{% url "login" %}">Log-in</a>
-    {% endif %}
-  </span>
-  </div>
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #80c4f5;">
+    <a class="navbar-brand" href="/"><h3>Cybersecurity Capstone Chat</h3></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
 
-  {% if messages %}
-    <ul class="messages">
-      {% for message in messages %}
-        <li class="{{ message.tags }}">
-          {{ message|safe }}
-            <a href="#" class="close">x</a>
+      <ul class="navbar-nav mr-auto">
+        {% if request.user.is_authenticated %}
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url "dashboard" %}">My dashboard <span class="sr-only">(current)</span></a>
         </li>
-      {% endfor %}
-    </ul>
-  {% endif %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url "send_message" %}">Send Message</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url "inbox" %}">Inbox</a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url "db_dump" %}">Dump database</a>
+        </li>
+      </ul>
+
+      {% if request.user.is_authenticated %}
+      <div class="row">
+        <div class="col">
+          <span class="navbar-text">
+            <h4> Hello {{ request.user.username }} </h4>
+          </span>
+        </div>
+        <div class="col">
+          <span class="navbar-text">
+            <a href="{% url "logout" %}">
+              <button type="button" class="btn btn-info">Logout</button>
+            </a>
+          </span>
+        </div>
+      </div>
+      {% else %}
+        <span class="navbar-text">
+          <a href="{% url "login" %}">
+            <button type="button" class="btn btn-info">Go to login page</button>
+          </a>
+        </span>
+      {% endif %}
+    </div>
+  </nav>
 
   <div id="content">
     {% block content %}
     {% endblock %}
   </div>
 </body>
+
+<script>
+  $(".alert").fadeTo(2000, 500).slideUp(500, function(){
+      $(".alert").slideUp(500);
+  });
+
+  $(".alert").fadeTo(2000, 500).slideUp(500, function(){
+      $(".alert").slideUp(500);
+  });
+</script>
+
 </html>

@@ -20,6 +20,7 @@ django-admin startapp account
 
 ### Build
 ```
+source venv/bin/activate
 cd chat_project
 python manage.py makemigrations && python manage.py migrate
 ```

@@ -28,5 +28,5 @@ urlpatterns = [
 
     # Send message
     path('send_message/', views.send_message, name='send_message'),
-    path('dbdump/', views.dbdump, name='db_dump'),
+    path('dbdump/', views.db_dump, name='db_dump'),
 ]

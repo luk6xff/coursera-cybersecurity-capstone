@@ -38,5 +38,8 @@ class ProfileEditForm(forms.ModelForm):
 
 
 class CreateMessageForm(forms.Form):
-    receiver = forms.ModelChoiceField(queryset=User.objects.all())
-    message = forms.CharField(max_length=250)
+    receiver = forms.ModelChoiceField(queryset=User.objects.all(), label='Send your message to',
+                                        widget=forms.Select(attrs={'placeholder':'Choose a receiver name'}))
+    message = forms.CharField(max_length=250, label='Message content',
+                                widget=forms.TextInput(attrs={'placeholder': 'Write your message here...',
+                                                           'size': '80'}))

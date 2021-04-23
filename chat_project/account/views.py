@@ -34,7 +34,7 @@ def user_login(request):
                 return HttpResponse('Invalid login')
     else:
         form = LoginForm()
-    return render(request, 'account/login.html', {'form': form})
+    return render(request, 'registration/login.html', {'form': form})
 
 
 @login_required
@@ -94,18 +94,18 @@ def edit(request):
 @login_required
 def send_message(request):
     form = CreateMessageForm()
-    form.fields['receiver'] = forms.ModelChoiceField(queryset=User.objects.exclude(id=request.user.id))
+    form.fields['receiver'].queryset = User.objects.exclude(id=request.user.id)
     confirm = None
     if request.method == "POST":
         form = CreateMessageForm(request.POST)
-        print("post")
         if form.is_valid():
-            print(Profile)
             receiver = request.POST.get("receiver")
             #import pdb; pdb.set_trace()
             msg = Message.objects.create(
-                receiver = Profile.objects.get(user=User.objects.get(id=receiver)),
-                sender   = Profile.objects.get(user=User.objects.get(id=request.user.id)),
+                # receiver = Profile.objects.get(user=User.objects.get(id=receiver)),
+                # sender   = Profile.objects.get(user=User.objects.get(id=request.user.id)),
+                receiver = User.objects.get(id=receiver),
+                sender   = User.objects.get(id=request.user.id),
                 message  = form.cleaned_data.get("message")
             )
             confirm = f"Message sent succesfully to: {User.objects.get(id=receiver).username}"
@@ -122,11 +122,15 @@ def send_message(request):
 @login_required
 def inbox(request):
     context = {
-        'msg_list' : Message.objects.all(),
+        'msg_received_list' : Message.objects.filter(receiver=request.user),
+        'msg_sent_list' : Message.objects.filter(sender=request.user),
     }
     return render(request, 'account/inbox.html', context)
 
 
-@login_required
-def dbdump(request):
-    return render(request, 'db_dump.html', {})
+def db_dump(request):
+    context = {
+        'profile_list' : Profile.objects.all(),
+        'msg_list' : Message.objects.all(),
+    }
+    return render(request, 'account/db_dump.html', context)
