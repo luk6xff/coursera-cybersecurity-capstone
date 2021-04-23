@@ -39,7 +39,7 @@ run_dev:
 	source venv/bin/activate && cd chat_project && ${PYTHON} manage.py makemigrations && ${PYTHON} manage.py migrate && ${PYTHON} manage.py runserver
 
 run_prod:
-	source venv/bin/activate && cd chat_project && ${PYTHON} manage.py makemigrations && ${PYTHON} manage.py migrate && gunicorn -b 0.0.0.0:80 chat_project.wsgi
+	source venv/bin/activate && cd chat_project && ${PYTHON} manage.py makemigrations && ${PYTHON} manage.py migrate && gunicorn -b 0.0.0.0:8000 chat_project.wsgi
 
 
 # Cleanup the stuff
