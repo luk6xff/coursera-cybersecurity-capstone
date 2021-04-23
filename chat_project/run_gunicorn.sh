@@ -11,6 +11,7 @@ DJANGO_SETTINGS_MODULE=chat_project.settings                  # which settings f
 DJANGO_WSGI_MODULE=chat_project.wsgi                          # WSGI module name (*)
 
 echo "Starting $NAME as `whoami`"
+pkill gunicorn
 
 # Activate the virtual environment
 cd $APP_DIR

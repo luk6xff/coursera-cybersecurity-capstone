@@ -49,6 +49,8 @@ First you need to install `nginx` server
 ```
 sudo apt-get update
 sudo apt install nginx
+sudo rm -rf /etc/nginx/sites-available/default
+sudo rm -rf /etc/nginx/sites-enabled/default
 touch /etc/nginx/sites-available/chat_project
 cp chat_project/chat_project_nginx.conf /etc/nginx/sites-available/chat_project
 sudo ln -s /etc/nginx/sites-available/chat_project /etc/nginx/sites-enabled
