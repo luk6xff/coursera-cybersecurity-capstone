@@ -14,7 +14,7 @@ echo "Starting $NAME as `whoami`"
 
 # Activate the virtual environment
 cd $APP_DIR
-source ../venv/bin/activate
+#source ../venv/bin/activate
 export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
 export PYTHONPATH=$APP_DIR:$PYTHONPATH
 

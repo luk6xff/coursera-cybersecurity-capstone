@@ -39,7 +39,8 @@ $ password: ...
 
 ### Run a development server
 ```
-python manage.py runserver
+python manage.py runserver 127.0.0.1:8000
+python manage.py runserver 0.0.0.0:8000
 ```
 Go to a website `http://127.0.0.1:8000/`
 
@@ -56,6 +57,11 @@ Check if created configuratin does not contain any bugs by typing:
 ```
 sudo nginx -t
 ```
+Collect all the static files
+```
+python manage.py collectstatic
+```
+
 Modify a gunicorn run command to be able to talk to Nginx:
 ```
 gunicorn --daemon --workers=5 --bind unix:/tmp/chat_project.sock chat_project.wsgi
@@ -76,5 +82,4 @@ Restart Nginx:
 systemctl restart nginx
 ```
 
-### Go to a website
-`http://127.0.0.1:8000/`
+Go to a website `http://0.0.0.0:8000/`
