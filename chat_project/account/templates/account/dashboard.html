@@ -6,10 +6,13 @@
 
   <h1>Dashboard</h1>
   <p>Welcome <b>{{ request.user.username }}</b> to your dashboard.
-    {% if profile.photo != None %}
+    {% if profile.photo %}
       <div>
         <img src="{{ profile.photo.url }}" class="rounded-circle" style="width: 200px; height: 200px; background-color: rgba(0,0,255,0.1);" alt="Responsive image">
-        <!-- <p>{{ profile.user.first_name }}</p> -->
+      </div>
+    {% else %}
+      <div>
+        <p>{{ profile.user.first_name }} {{ profile.user.last_name }}</p>
       </div>
     {% endif %}
   </p>

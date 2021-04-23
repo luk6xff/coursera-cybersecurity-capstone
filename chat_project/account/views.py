@@ -43,6 +43,7 @@ def user_login(request):
 @login_required
 def dashboard(request):
     #import pdb; pdb.set_trace()
+    Profile.objects.get(user=User.objects.get(id=request.user.id))
     return render(request,
                   'account/dashboard.html',
                   { 'profile': Profile.objects.get(user=User.objects.get(id=request.user.id)),
