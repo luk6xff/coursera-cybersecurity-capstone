@@ -53,10 +53,17 @@ touch /etc/nginx/sites-available/chat_project
 cp chat_project/chat_project_nginx.conf /etc/nginx/sites-available/chat_project
 sudo ln -s /etc/nginx/sites-available/chat_project /etc/nginx/sites-enabled
 ```
+
+Modify `/etc/nginx/nginx.conf` as shown below:
+```
+user root www-data
+```
+
 Check if created configuratin does not contain any bugs by typing:
 ```
 sudo nginx -t
 ```
+
 Collect all the static files
 ```
 python manage.py collectstatic
@@ -66,15 +73,11 @@ Modify a gunicorn run command to be able to talk to Nginx:
 ```
 gunicorn --daemon --workers=5 --bind unix:/tmp/chat_project.sock chat_project.wsgi
 ```
+
 or preffered way:
 ```
 chmod a+x run_gunicorn.sh
 ./run_gunicorn.sh
-```
-```
-Modify `/etc/nginx/nginx.conf` as shown below:
-```
-user root www-data
 ```
 
 Restart Nginx:
