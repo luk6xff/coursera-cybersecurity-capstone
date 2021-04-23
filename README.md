@@ -73,11 +73,13 @@ python manage.py collectstatic
 
 Modify a gunicorn run command to be able to talk to Nginx:
 ```
+pkill gunicorn
 gunicorn --daemon --workers=5 --bind unix:/tmp/chat_project.sock chat_project.wsgi
 ```
 
 or preffered way:
 ```
+pkill gunicorn
 chmod a+x run_gunicorn.sh
 ./run_gunicorn.sh
 ```
