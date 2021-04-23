@@ -40,20 +40,26 @@ $ password: ...
 ### Run a development server
 ```
 python manage.py runserver 127.0.0.1:8000
-python manage.py runserver 0.0.0.0:8000
 ```
 Go to a website `http://127.0.0.1:8000/`
 
 ### Run a production server
+Test if gunicorn works
+```
+gunicorn -b 0.0.0.0:8000 chat_project.wsgi
+```
+Go to a website `http://0.0.0.0:8000/` and see if it is accessible.
+
 First you need to install `nginx` server
 ```
 sudo apt-get update
 sudo apt install nginx
 sudo rm -rf /etc/nginx/sites-available/default
 sudo rm -rf /etc/nginx/sites-enabled/default
-touch /etc/nginx/sites-available/chat_project
-cp chat_project/chat_project_nginx.conf /etc/nginx/sites-available/chat_project
-sudo ln -s /etc/nginx/sites-available/chat_project /etc/nginx/sites-enabled
+touch /etc/nginx/sites-available/chat_project && cp chat_project/chat_project_nginx.conf /etc/nginx/sites-available/chat_project
+mkdir -p  /root/Projects/coursera-cybersecurity-capstone/chat_project/logs && touch /root/Projects/coursera-cybersecurity-capstone/chat_project/logs/nginx-access.log
+
+sudo ln -sf /etc/nginx/sites-available/chat_project /etc/nginx/sites-enabled
 ```
 
 Modify `/etc/nginx/nginx.conf` as shown below:
@@ -74,7 +80,7 @@ python manage.py collectstatic
 Modify a gunicorn run command to be able to talk to Nginx:
 ```
 pkill gunicorn
-gunicorn --daemon --workers=5 --bind unix:/tmp/chat_project.sock chat_project.wsgi
+gunicorn --daemon --workers=3 --bind unix:/tmp/chat_project.sock chat_project.wsgi
 ```
 
 or preffered way:
