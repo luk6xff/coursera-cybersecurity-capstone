@@ -18,6 +18,11 @@ django-admin startapp account
 
 ## Run the app
 
+The easiest way to setup and run a full clean environment is by typing in the root:
+```
+make
+```
+
 ### Build
 ```
 source venv/bin/activate
@@ -35,6 +40,9 @@ $ password: ...
 ```
 python manage.py runserver
 ```
-Go to: `http://127.0.0.1:8000/`
 
 ### Run a production server
+TODO
+
+### Go to a website
+`http://127.0.0.1:8000/`
