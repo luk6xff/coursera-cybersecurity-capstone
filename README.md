@@ -62,16 +62,13 @@ gunicorn --daemon --workers=5 --bind unix:/tmp/chat_project.sock chat_project.ws
 ```
 or preffered way:
 ```
-./run_gunicron.sh
+chmod a+x run_gunicorn.sh
+./run_gunicorn.sh
 ```
 ```
 Modify `/etc/nginx/nginx.conf` as shown below:
 ```
 user root www-data
-```
-
-```
-gunicorn -b 0.0.0.0:8000 chat_project.wsgi
 ```
 
 Restart Nginx:
