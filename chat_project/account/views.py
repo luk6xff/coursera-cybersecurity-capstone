@@ -1,4 +1,7 @@
+import os
 from django.shortcuts import render
+from django.core.files import File
+from django.conf import settings
 
 # Create your views here.
 
@@ -39,9 +42,11 @@ def user_login(request):
 
 @login_required
 def dashboard(request):
+    #import pdb; pdb.set_trace()
     return render(request,
                   'account/dashboard.html',
-                  {'section': 'dashboard'})
+                  { 'profile': Profile.objects.get(user=User.objects.get(id=request.user.id)),
+                    'section': 'dashboard'})
 
 
 def register(request):
@@ -69,6 +74,7 @@ def register(request):
 
 @login_required
 def edit(request):
+    confirm = None
     if request.method == 'POST':
         user_form = UserEditForm(instance=request.user,
                                  data=request.POST)
@@ -79,16 +85,19 @@ def edit(request):
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
-            messages.success(request, 'Profile updated successfully')
+            #messages.success(request, 'Profile updated successfully')
+            confirm = (True, 'Profile updated successfully')
         else:
-            messages.error(request, 'Error updating your profile')
+            #messages.error(request, 'Error updating your profile')
+            confirm = (False, 'Error updating your profile')
     else:
         user_form = UserEditForm(instance=request.user)
         profile_form = ProfileEditForm(instance=request.user.profile)
     return render(request,
                   'account/edit.html',
                   {'user_form': user_form,
-                   'profile_form': profile_form})
+                   'profile_form': profile_form,
+                   'confirm': confirm})
 
 
 @login_required
@@ -101,15 +110,18 @@ def send_message(request):
         if form.is_valid():
             receiver = request.POST.get("receiver")
             #import pdb; pdb.set_trace()
-            msg = Message.objects.create(
-                # receiver = Profile.objects.get(user=User.objects.get(id=receiver)),
-                # sender   = Profile.objects.get(user=User.objects.get(id=request.user.id)),
-                receiver = User.objects.get(id=receiver),
-                sender   = User.objects.get(id=request.user.id),
-                message  = form.cleaned_data.get("message")
-            )
-            confirm = f"Message sent succesfully to: {User.objects.get(id=receiver).username}"
-            msg.save()
+            if receiver == request.user.id:
+                messages.success(request, f"Cannot send a meesage to yourself!")
+            else:
+                msg = Message.objects.create(
+                    # receiver = Profile.objects.get(user=User.objects.get(id=receiver)),
+                    # sender   = Profile.objects.get(user=User.objects.get(id=request.user.id)),
+                    receiver = User.objects.get(id=receiver),
+                    sender   = User.objects.get(id=request.user.id),
+                    message  = form.cleaned_data.get("message")
+                )
+                confirm = f"Message sent succesfully to: {User.objects.get(id=receiver).username}"
+                msg.save()
         else:
             print("send_message form not valid!")
     context = {
@@ -129,8 +141,23 @@ def inbox(request):
 
 
 def db_dump(request):
+    msg_list = Message.objects.all()
+    # Hash the message to not show it in UI
+    import base64, hashlib
+    for i,_ in enumerate(msg_list):
+        msg_list[i].message = "ENCRYPTED:" + base64.b64encode(hashlib.sha512(str.encode("abcdefgh")+str.encode(msg_list[i].message)).digest()).decode()
+
     context = {
         'profile_list' : Profile.objects.all(),
-        'msg_list' : Message.objects.all(),
+        'msg_list' : msg_list,
     }
     return render(request, 'account/db_dump.html', context)
+
+
+def db_dump_file(request):
+    path_to_file = os.path.abspath(settings.DATABASES['default']['NAME'])
+    fd = open(path_to_file, 'rb')
+    f = File(fd)
+    response = HttpResponse(f, content_type='application/octet-stream')
+    response['Content-Disposition'] = 'attachment; filename=' + os.path.basename(path_to_file)
+    return response

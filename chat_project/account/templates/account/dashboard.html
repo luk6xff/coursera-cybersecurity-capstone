@@ -5,5 +5,14 @@
 {% block content %}
 
   <h1>Dashboard</h1>
-  <p>Welcome <b>{{ request.user.username }}</b> to your dashboard. You can <a href="{% url "edit" %}">edit your profile</a> or <a href="{% url "password_change" %}">change your password</a>.</p>
+  <p>Welcome <b>{{ request.user.username }}</b> to your dashboard.
+    {% if profile.photo != None %}
+      <div>
+        <img src="{{ profile.photo.url }}" class="rounded-circle" style="width: 200px; height: 200px; background-color: rgba(0,0,255,0.1);" alt="Responsive image">
+        <!-- <p>{{ profile.user.first_name }}</p> -->
+      </div>
+    {% endif %}
+  </p>
+  <p>You can here <a href="{% url "edit" %}">edit your profile</a> or <a href="{% url "password_change" %}">change your password</a>.</p>
+
 {% endblock %}

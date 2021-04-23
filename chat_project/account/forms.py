@@ -35,6 +35,18 @@ class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ('date_of_birth', 'photo')
+        widgets = {
+            'date_of_birth': forms.DateInput(format=('%m/%d/%Y'), attrs={'class':'form-control', 'placeholder':'Select a date', 'type':'date'}),
+        }
+
+    def clean_image(self):
+        image = self.cleaned_data.get('image', False)
+        if image:
+            if image._size > 1*1024*1024:
+                raise ValidationError("Image file too large ( > 1mb )")
+            return image
+        else:
+            raise ValidationError("Couldn't read uploaded image")
 
 
 class CreateMessageForm(forms.Form):
