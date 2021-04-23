@@ -18,7 +18,7 @@ django-admin startapp account
 
 ## Run the app
 
-The easiest way to setup and run a full clean environment is by typing in the root:
+The easiest way to setup and run a full clean environment is by typing in the root project folder the following command:
 ```
 make
 ```
