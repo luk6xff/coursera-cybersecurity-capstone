@@ -46,7 +46,7 @@ Go to a website `http://127.0.0.1:8000/`
 ### Run a production server
 Test if gunicorn works
 ```
-gunicorn -b 0.0.0.0:8000 chat_project.wsgi
+gunicorn chat_project.wsgi:application --bind 0.0.0.0:8000
 ```
 Go to a website `http://0.0.0.0:8000/` and see if it is accessible.
 
@@ -86,8 +86,7 @@ gunicorn --daemon --workers=3 --bind unix:/tmp/chat_project.sock chat_project.ws
 or preffered way:
 ```
 pkill gunicorn
-chmod a+x run_gunicorn.sh
-./run_gunicorn.sh
+chmod a+x run_gunicorn.sh && ./run_gunicorn.sh
 ```
 
 Restart Nginx:
