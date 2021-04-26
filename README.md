@@ -11,32 +11,26 @@ Solution for [Coursera Cybersecurity Capstone Project](https://www.coursera.org/
 * Dashboard:
 ![_](pics/4.png)
 
-## Setup environment
-```
-python3 -m venv venv
-source venv/bin/activate
-pip install -U pip
-pip install -r requirements.txt
-```
-
-## Create project and apps
+## Create a project structure (Not need to run it)
 ```
 django-admin startproject chat_project
 cd chat_project
 django-admin startapp account
 ```
 
-## Run the app
+## Build and run the app
 
-The easiest way to setup and run a full clean environment is by calling `make`:
-Development server:
+### Using make command
+The easiest way to setup, build and run a full clean environment is by calling `make`:
+
+For Development server:
 ```
 make setup
 make run
 ```
 Go to: `http://127.0.0.1:8000/`
 
-Production server:
+For Production server:
 ```
 make setup prod=on
 make run prod=on
@@ -44,6 +38,14 @@ make run prod=on
 Go to: `http://<your_server_ip>:80/`
 
 ### All the steps used in Makefile described below
+#### Setup
+```
+python3 -m venv venv
+source venv/bin/activate
+pip install -U pip
+pip install -r requirements.txt
+```
+
 #### Build
 ```
 source venv/bin/activate
@@ -51,7 +53,7 @@ cd chat_project
 python manage.py makemigrations && python manage.py migrate
 ```
 
-#### Create an admin account
+#### Create an admin account (only if needed)
 ```
 python manage.py createsuperuser --username=luk6xff --email=luk6xff@example.com
 $ password: ...
