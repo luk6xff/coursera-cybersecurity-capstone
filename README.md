@@ -1,6 +1,15 @@
 # coursera-cybersecurity-capstone
 Solution for [Coursera Cybersecurity Capstone Project](https://www.coursera.org/learn/cyber-security-capstone)
 
+## Some pics of the working app
+* Send message view:
+![_](pics/1.png)
+* Inbox:
+![_](pics/2.png)
+* Database dump:
+![_](pics/3.png)
+* Dashboard:
+![_](pics/4.png)
 
 ## Setup environment
 ```
@@ -19,31 +28,52 @@ django-admin startapp account
 
 ## Run the app
 
-The easiest way to setup and run a full clean environment is by typing in the root project folder the following command:
+The easiest way to setup and run a full clean environment is by calling `make`:
+Development server:
 ```
-make
+make setup
+make run
 ```
+Go to: `http://127.0.0.1:8000/`
 
-### Build
+Production server:
+```
+make setup prod=on
+make run prod=on
+```
+Go to: `http://<your_server_ip>:80/`
+
+### All the steps used in Makefile described below
+#### Build
 ```
 source venv/bin/activate
 cd chat_project
 python manage.py makemigrations && python manage.py migrate
 ```
 
-### Create an admin account
+#### Create an admin account
 ```
 python manage.py createsuperuser --username=luk6xff --email=luk6xff@example.com
 $ password: ...
 ```
 
-### Run a development server
+#### Run a development server
+Modify `DEBUG` flag from: `chat_project/chat_project/settings.py`
 ```
-python manage.py runserver 127.0.0.1:80
+DEBUG = True
 ```
-Go to a website `http://127.0.0.1:80/`
+Run the server
+```
+python manage.py runserver 127.0.0.1:8000
+```
+Go to a website: `http://127.0.0.1:8000/`
 
-### Run a production server
+#### Run a production server
+Modify `DEBUG` flag from: `chat_project/chat_project/settings.py`
+```
+DEBUG = False
+```
+
 Test if gunicorn works
 ```
 gunicorn chat_project.wsgi:application --bind 0.0.0.0:80
@@ -57,7 +87,7 @@ sudo apt install nginx
 sudo rm -rf /etc/nginx/sites-available/default
 sudo rm -rf /etc/nginx/sites-enabled/default
 touch /etc/nginx/sites-available/chat_project && cp chat_project/chat_project_nginx.conf /etc/nginx/sites-available/chat_project
-mkdir -p  /root/Projects/coursera-cybersecurity-capstone/chat_project/logs && touch /root/Projects/coursera-cybersecurity-capstone/chat_project/logs/nginx-access.log
+mkdir -p chat_project/logs && touch chat_project/logs/nginx-access.log
 
 sudo ln -sf /etc/nginx/sites-available/chat_project /etc/nginx/sites-enabled
 ```
@@ -80,13 +110,11 @@ python manage.py collectstatic
 Modify a gunicorn run command to be able to talk to Nginx:
 ```
 pkill gunicorn
-gunicorn --daemon --workers=3 --bind unix:/tmp/chat_project.sock chat_project.wsgi
-```
-
-or preffered way:
-```
-pkill gunicorn
 chmod a+x run_gunicorn.sh && ./run_gunicorn.sh
+
+or:
+
+gunicorn --daemon --workers=3 --bind unix:/tmp/chat_project.sock chat_project.wsgi
 ```
 
 Restart Nginx:
@@ -94,4 +122,4 @@ Restart Nginx:
 systemctl restart nginx
 ```
 
-Go to a website `http://0.0.0.0:80/`
+Go to: `http://<your_server_ip>:80/`

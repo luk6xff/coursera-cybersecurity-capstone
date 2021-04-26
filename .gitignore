@@ -131,3 +131,4 @@ dmypy.json
 # Project specific
 utils/*
 chat_project/static_root/
+chat_project/media/
